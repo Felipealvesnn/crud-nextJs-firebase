@@ -34,7 +34,7 @@ export default function AlertDialog(props: ModalProps) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.abrirOuFecharModal}>fechar</Button>
+                    <Button  onClick={props.abrirOuFecharModal}>fechar</Button>
                     <Button onClick={props.abrirOuFecharModal} autoFocus>
                         Agree
                     </Button>
