@@ -13,6 +13,7 @@ interface ModalProps {
     aberto: boolean
     abrirOuFecharModal: () => void
     cliente?: Cliente
+
 }
 
 
@@ -20,6 +21,7 @@ export default function AlertDialog(props: ModalProps) {
     const id = props.cliente?.id;
     const [nome, setNome] = useState(props.cliente?.nome);
     const [idade, setIdade] = useState(props.cliente?.idade);
+
     function body() {
         return (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', }}>
@@ -60,7 +62,7 @@ export default function AlertDialog(props: ModalProps) {
                     <Button onClick={() => {
                         console.log(nome, idade)
                     }} autoFocus>
-                        Agree
+                        Salvar
                     </Button>
                 </DialogActions>
             </Dialog>
