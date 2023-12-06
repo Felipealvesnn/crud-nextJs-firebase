@@ -13,7 +13,7 @@ export default function Home() {
     new Cliente('Pedro', 54, '4'),
   ]);
 
-  const [clienteEmEdicao, setClienteEmEdicao] = useState<Cliente | null>(null);
+  const [clienteEmEdicao, setClienteEmEdicao] = useState<Cliente>(Cliente.vazio());
   const [modalOpen, setModalOpen] = useState(false);
 
   function clienteEditar(cliente: Cliente) {
@@ -33,7 +33,7 @@ export default function Home() {
       const novosClientes = [...clientes];
       novosClientes[index] = cliente;
       setClientes(novosClientes);
-      setClienteEmEdicao(null); // Limpar o cliente em edição após salvar
+      setClienteEmEdicao(Cliente.vazio()); // Limpar o cliente em edição após salvar
     } else {
       // Caso contrário, estamos adicionando um novo cliente
       setClientes([...clientes, cliente]);
@@ -42,8 +42,8 @@ export default function Home() {
 
   const abrirOuFecharModal = () => {
     setModalOpen(!modalOpen);
-   
-   
+
+
   };
 
   return (
