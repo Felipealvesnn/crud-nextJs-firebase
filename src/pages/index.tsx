@@ -60,7 +60,7 @@ export default function Home() {
           />
         </Layout>
         <Modal
-          onClose={() => setClienteEmEdicao(null)}
+          onClose={() => setClienteEmEdicao(Cliente.vazio())}
           ClienteMudou={clienteSalvo}
           aberto={modalOpen}
           abrirOuFecharModal={abrirOuFecharModal}
