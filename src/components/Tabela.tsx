@@ -1,43 +1,56 @@
-import Cliente from "../core/Cliente"
-import { iconeedicao, iconeexclusao } from "./icons"
+import React, { useState } from 'react';
+import Cliente from "../core/Cliente";
+import { iconeedicao, iconeexclusao } from "./icons";
 
 interface TabelaProps {
-    clientes: Cliente[]
-    clienteSelecionado?: (cliente: Cliente) => void
-    clienteExcluido?: (cliente: Cliente) => void
-
+    clientes: Cliente[];
+    clienteSelecionado?: (cliente: Cliente) => void;
+    clienteExcluido?: (cliente: Cliente) => void;
 }
 
-
-
 export default function Tabela(props: TabelaProps) {
-    const exibirAcoes = props.clienteExcluido || props.clienteSelecionado
-    function renderizarCabecalho() {
+    const [clienteParaExcluir, setClienteParaExcluir] = useState<Cliente | null>(null);
 
+    function confirmarExclusao(cliente: Cliente) {
+        setClienteParaExcluir(cliente);
+    }
+
+    function cancelarExclusao() {
+        setClienteParaExcluir(null);
+    }
+
+    function handleExcluirConfirmado() {
+        if (clienteParaExcluir) {
+            props.clienteExcluido?.(clienteParaExcluir);
+            cancelarExclusao();
+        }
+    }
+
+    function renderizarCabecalho() {
         return (
             <tr className="text-center p-4">
-                <th className="text-center p-4" >codigo</th>
-                <th>nome</th>
-                <th>idade</th>
-                {exibirAcoes ? <th>Ações </th> : false}
+                <th className="text-center p-4">Código</th>
+                <th>Nome</th>
+                <th>Idade</th>
+                {props.clienteExcluido || props.clienteSelecionado ? <th>Ações</th> : false}
             </tr>
-        )
+        );
     }
+
     function renderizarDados() {
         return props.clientes?.map((cliente, i) => {
             return (
                 <tr key={cliente.id}
-                    className={`text-center p-4 ${i % 2 === 1 ?
-                        'bg-gray-200' : ''}`}>
+                    className={`text-center p-4 ${i % 2 === 1 ? 'bg-gray-200' : ''}`}>
                     <td className={'p-2'}>{cliente.id}</td>
                     <td>{cliente.nome}</td>
                     <td>{cliente.idade}</td>
-                    {exibirAcoes ? renderizarAcoes(cliente) : false}
+                    {(props.clienteExcluido || props.clienteSelecionado) ? renderizarAcoes(cliente) : false}
                 </tr>
-            )
-        },
-        )
+            );
+        });
     }
+
     function renderizarAcoes(cliente: Cliente) {
         return (
             <td className="flex justify-center">
@@ -48,13 +61,28 @@ export default function Tabela(props: TabelaProps) {
                         {iconeedicao}
                     </button>) : false}
                 {props.clienteExcluido ? (
-                    <button onClick={() => props.clienteExcluido?.(cliente)} className={`flex justify-center items-center
+                    <>
+                        <button onClick={() => confirmarExclusao(cliente)} className={`flex justify-center items-center
                 text-red-600 rounded-full p-2 m-1
                 hover:bg-gray-50`}>
-                        {iconeexclusao}
-                    </button>) : false}
+                            {iconeexclusao}
+                        </button>
+                        {clienteParaExcluir && (
+                            // Modal de confirmação
+                            <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                                <div className="bg-white p-4 rounded-md">
+                                    <p>Deseja realmente excluir o cliente {clienteParaExcluir.nome}?</p>
+                                    <div className="flex justify-end mt-2">
+                                        <button onClick={handleExcluirConfirmado} className="bg-red-500 text-white px-4 py-2 mr-2">Sim</button>
+                                        <button onClick={cancelarExclusao} className="bg-gray-200 text-gray-800 px-4 py-2">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </>
+                ) : false}
             </td>
-        )
+        );
     }
 
     return (
@@ -63,11 +91,8 @@ export default function Tabela(props: TabelaProps) {
                 {renderizarCabecalho()}
             </thead>
             <tbody>
-                {renderizarDados()
-                }
+                {renderizarDados()}
             </tbody>
-
         </table>
-    )
-
+    );
 }
