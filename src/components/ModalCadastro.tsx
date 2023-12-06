@@ -1,74 +1,65 @@
-
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Inputs from './Inputs';
-import { Box } from '@mui/material';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import Cliente from '../core/Cliente';
+import Inputs from './Inputs';
+
 interface ModalProps {
-    aberto: boolean
-    ClienteMudou?: (cliente: Cliente) => void
-    abrirOuFecharModal: () => void
-    cliente?: Cliente
-   
-
-
+  aberto: boolean;
+  ClienteMudou?: (cliente: Cliente) => void;
+  onClose: () => void;
+  cliente?: Cliente;
+  abrirOuFecharModal: () => void
 }
 
-// ... (imports e interface ModalProps)
-// ... (imports e interface ModalProps)
-
 export default function AlertDialog(props: ModalProps) {
-    const id = props.cliente?.id;
-    const [nome, setNome] = useState(props.cliente?.nome ?? '');
-    const [idade, setIdade] = useState(props.cliente?.idade ?? 0);
+  const { aberto, onClose, ClienteMudou, cliente } = props;
+  const id = cliente?.id;
+  const [nome, setNome] = useState(cliente?.nome ?? '');
+  const [idade, setIdade] = useState(cliente?.idade ?? 0);
 
-    // Atualizar os estados internos quando o cliente em edição for alterado
-    useEffect(() => {
-        setNome(props.cliente?.nome ?? '');
-        setIdade(props.cliente?.idade ?? 0);
-    }, [props.cliente]);
-
-    function body() {
-        return (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                {id ? <Inputs disabled tipo='number' texto='Id' valor={id} /> : null}
-                <Inputs valorMudou={setNome} tipo='texto' texto='Nome' valor={nome} />
-                <Inputs valorMudou={setIdade} valor={idade} tipo='number' texto='Idade' />
-                <Inputs tipo='password' showPassword texto='Senha' />
-            </Box>
-        );
+  const handleSave = () => {
+    if (ClienteMudou) {
+      ClienteMudou(new Cliente(nome, idade, id));
+      onClose();
+      setNome('');
+      setIdade(0);
     }
+  };
 
-    return (
-        <>
-            <Dialog
-                open={props.aberto}
-                onClose={props.abrirOuFecharModal}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{"Cadastrar pessoa"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">{body()}</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={props.abrirOuFecharModal}>Fechar</Button>
-                    <Button
-                        onClick={() => {
-                            props.ClienteMudou?.(new Cliente(nome, idade, id));
-                            props.abrirOuFecharModal();
-                        }}
-                        autoFocus
-                    >
-                        Salvar
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </>
-    );
+  useEffect(() => {
+    setNome(cliente?.nome ?? '');
+    setIdade(cliente?.idade ?? 0);
+  }, [cliente]);
+
+  const body = () => (
+    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+      {id && <Inputs disabled tipo='number' texto='Id' valor={id} />}
+      <Inputs valorMudou={setNome} tipo='texto' texto='Nome' valor={nome} />
+      <Inputs valorMudou={setIdade} valor={idade} tipo='number' texto='Idade' />
+      <Inputs tipo='password' showPassword texto='Senha' />
+    </Box>
+  );
+
+  return (
+    <Dialog
+      open={aberto}
+      onClose={() => {
+        onClose();
+        props.abrirOuFecharModal();
+      }}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{"Cadastrar pessoa"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">{body()}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Fechar</Button>
+        <Button onClick={handleSave} autoFocus>
+          Salvar
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 }

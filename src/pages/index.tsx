@@ -42,6 +42,8 @@ export default function Home() {
 
   const abrirOuFecharModal = () => {
     setModalOpen(!modalOpen);
+   
+   
   };
 
   return (
@@ -58,6 +60,7 @@ export default function Home() {
           />
         </Layout>
         <Modal
+          onClose={() => setClienteEmEdicao(null)}
           ClienteMudou={clienteSalvo}
           aberto={modalOpen}
           abrirOuFecharModal={abrirOuFecharModal}
