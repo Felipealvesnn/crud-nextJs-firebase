@@ -26,8 +26,8 @@ export default function AlertDialog(props: ModalProps) {
                 {
                     id ? <Inputs disabled tipo='number' texto='Id' valor={id} /> : null
                 }
-                <Inputs  tipo='texto' texto='Nome' valor={nome} />
-                <Inputs tipo='number' texto='Idade' />
+                <Inputs valorMudou={setNome} tipo='texto' texto='Nome' valor={nome} />
+                <Inputs valorMudou={setIdade} valor={idade} tipo='number' texto='Idade' />
                 <Inputs tipo='password' showPassword texto='Senha' />
             </Box>
         )
@@ -57,7 +57,9 @@ export default function AlertDialog(props: ModalProps) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={props.abrirOuFecharModal}>fechar</Button>
-                    <Button onClick={props.abrirOuFecharModal} autoFocus>
+                    <Button onClick={() => {
+                        console.log(nome, idade)
+                    }} autoFocus>
                         Agree
                     </Button>
                 </DialogActions>

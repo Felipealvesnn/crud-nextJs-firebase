@@ -6,23 +6,25 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 interface InputsProps {
     texto: string
-    tipo?: 'texto'|'number'|'password'
+    tipo?: 'texto' | 'number' | 'password'
     valor?: any
     showPassword?: boolean
     disabled?: boolean
+    valorMudou?: (valor: any) => void
 
 }
 
 export default function Inputs(props: InputsProps) {
     const shows = props.showPassword ? props.showPassword : false
-    const disabled = props.disabled ?  true: false
+    const disabled = props.disabled ? true : false
     return (
 
 
         <FormControl fullWidth sx={{ m: 1, w: 100 }}>
             <InputLabel htmlFor="standard-adornment-password">{props.texto}</InputLabel>
             <Input
-               disabled={disabled}
+                onChange={e => props.valorMudou?.(e.target.value)}
+                disabled={disabled}
                 value={props.valor}
                 id="standard-adornment-password"
                 type={props.tipo}
