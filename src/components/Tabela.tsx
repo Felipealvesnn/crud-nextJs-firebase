@@ -11,6 +11,20 @@ interface TabelaProps {
 export default function Tabela(props: TabelaProps) {
     const [clienteParaExcluir, setClienteParaExcluir] = useState<Cliente | null>(null);
 
+    function modalExclusao() {
+        return (
+            <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                <div className="bg-white p-4 rounded-md">
+                    <p>Deseja realmente excluir o cliente {clienteParaExcluir?.nome}?</p>
+                    <div className="flex justify-end mt-2">
+                        <button onClick={handleExcluirConfirmado} className="bg-red-500 text-white px-4 py-2 mr-2">Sim</button>
+                        <button onClick={cancelarExclusao} className="bg-gray-200 text-gray-800 px-4 py-2">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     function confirmarExclusao(cliente: Cliente) {
         setClienteParaExcluir(cliente);
     }
@@ -73,15 +87,7 @@ export default function Tabela(props: TabelaProps) {
                         </button>
                         {clienteParaExcluir && (
                             // Modal de confirmação
-                            <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-                                <div className="bg-white p-4 rounded-md">
-                                    <p>Deseja realmente excluir o cliente {clienteParaExcluir.nome}?</p>
-                                    <div className="flex justify-end mt-2">
-                                        <button onClick={handleExcluirConfirmado} className="bg-red-500 text-white px-4 py-2 mr-2">Sim</button>
-                                        <button onClick={cancelarExclusao} className="bg-gray-200 text-gray-800 px-4 py-2">Cancelar</button>
-                                    </div>
-                                </div>
-                            </div>
+                            modalExclusao()
                         )}
                     </>
                 ) : false}
