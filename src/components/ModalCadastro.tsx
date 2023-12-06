@@ -23,6 +23,7 @@ export default function AlertDialog(props: ModalProps) {
             onClose();
             setNome('');
             setIdade(0);
+            props.abrirOuFecharModal();
         }
     };
 
