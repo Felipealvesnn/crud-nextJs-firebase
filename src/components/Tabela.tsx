@@ -1,4 +1,4 @@
-import Cliente from "../core/cliente"
+import Cliente from "../core/Cliente"
 import { iconeedicao, iconeexclusao } from "./icons"
 
 interface TabelaProps {

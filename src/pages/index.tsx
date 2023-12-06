@@ -2,7 +2,7 @@ import { Fragment, useRef, useState } from 'react'
 import Layout from '../components/Layout'
 import Tabela from '../components/Tabela'
 import Botao from '../components/Botao'
-import Cliente from '../core/cliente'
+import Cliente from '../core/Cliente'
 import Modal from '../components/ModalCadastro'
 
 
