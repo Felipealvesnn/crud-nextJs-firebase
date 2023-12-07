@@ -17,7 +17,7 @@ export default function Tabela(props: TabelaProps) {
                 <div className="bg-white p-4 rounded-md">
                     <p>Deseja realmente excluir o cliente {clienteParaExcluir?.nome}?</p>
                     <div className="flex justify-end mt-2">
-                        <button onClick={handleExcluirConfirmado} className="bg-red-500 text-white px-4 py-2 mr-2">Sim</button>
+                        <button onClick={ConfirmarExclusao} className="bg-red-500 text-white px-4 py-2 mr-2">Sim</button>
                         <button onClick={cancelarExclusao} className="bg-gray-200 text-gray-800 px-4 py-2">Cancelar</button>
                     </div>
                 </div>
@@ -25,7 +25,7 @@ export default function Tabela(props: TabelaProps) {
         );
     }
 
-    function confirmarExclusao(cliente: Cliente) {
+    function SetarOclienteParaExclusao(cliente: Cliente) {
         setClienteParaExcluir(cliente);
     }
 
@@ -33,7 +33,7 @@ export default function Tabela(props: TabelaProps) {
         setClienteParaExcluir(null);
     }
 
-    function handleExcluirConfirmado() {
+    function ConfirmarExclusao() {
         if (clienteParaExcluir) {
             props.clienteExcluido?.(clienteParaExcluir);
             cancelarExclusao();
@@ -80,7 +80,7 @@ export default function Tabela(props: TabelaProps) {
                 {props.clienteExcluido ? (
                     <>
                         <button onClick={
-                            () => confirmarExclusao(cliente)} className={`flex justify-center items-center
+                            () => SetarOclienteParaExclusao(cliente)} className={`flex justify-center items-center
                 text-red-600 rounded-full p-2 m-1
                 hover:bg-gray-50`}>
                             {iconeexclusao}
