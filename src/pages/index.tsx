@@ -4,8 +4,12 @@ import Tabela from '../components/Tabela';
 import Botao from '../components/Botao';
 import Cliente from '../core/Cliente';
 import Modal from '../components/ModalCadastro';
+import ClienteRepository from '../core/ClienteRepository';
+import ColecaoCliente from '../backend/db/ColecaoCliente';
 
 export default function Home() {
+  const repo: ClienteRepository = new ColecaoCliente()
+
   const [clientes, setClientes] = useState([
     new Cliente('Ana', 34, '1'),
     new Cliente('Bia', 45, '2'),
